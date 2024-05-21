@@ -1,7 +1,5 @@
 # Note Taker
 
-### None
-
 ## Description
 A simple website that can store a user's notes.
 
@@ -14,7 +12,7 @@ A simple website that can store a user's notes.
 - [Questions](#questions)
 
 ## Installation
-N/A. Just visit the website.
+N/A. Just visit the website. [Here](https://note-taker-tim.onrender.com/)
 
 ## Usage
 To enter a new note just fill in an empty note and press save. To read a saved note, just click on the note on the left hand side. Here is a demo:
