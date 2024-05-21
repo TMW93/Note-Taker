@@ -1,10 +1,13 @@
 const notes = require(`express`).Router();
-const {readAndAppend, readFromFile} = require(`../helpers/fsUtils`);
+const {readAndAppend, readFromFile, writeToFile} = require(`../helpers/fsUtils`);
 const uuid = require(`../helpers/uuid`);
+const notesData = require(`../db/db.json`);
+
+const notesDB = `./db/db.json`;
 
 //Get Route for getting saved notes
 notes.get(`/`, (req, res) => {
-  readFromFile(`./db/db.json`)
+  readFromFile(notesDB)
   .then((data) => {
     res.json(JSON.parse(data));
   })
@@ -25,7 +28,7 @@ notes.post(`/`, (req, res) => {
     };
 
     //append req.body onto notes api
-    readAndAppend(newNote, `./db/db.json`);
+    readAndAppend(newNote, notesDB);
 
     const response = {
       status: `Note posted successfully.`,
@@ -40,6 +43,21 @@ notes.post(`/`, (req, res) => {
     res.json(`Error in posting note.`)
   }
 
+});
+
+//Delete Route for deleting notes
+notes.delete(`/:id`, (req, res) => {
+  // console.log(notesData.length);
+
+  const reqID = req.params.id;
+
+  const filteredNotes = notesData.filter(function(note) {
+    return note.id !== reqID;
+  });
+
+  // console.log(filteredNotes);
+
+  writeToFile(notesDB, filteredNotes);
 });
 
 module.exports = notes;
