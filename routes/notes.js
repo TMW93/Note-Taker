@@ -49,8 +49,17 @@ notes.post(`/`, (req, res) => {
 notes.delete(`/:id`, (req, res) => {
   // console.log(notesData.length);
 
+  let foundNote = [];
   const reqID = req.params.id;
 
+  //finding requested note
+  for(let i = 0; i < notesData.length; i++) {
+    if(reqID === notesData[i].id) {
+      foundNote = notesData[i];
+    }
+  }
+
+  //filtering out the note by its id and returning new json object
   const filteredNotes = notesData.filter(function(note) {
     return note.id !== reqID;
   });
@@ -58,6 +67,18 @@ notes.delete(`/:id`, (req, res) => {
   // console.log(filteredNotes);
 
   writeToFile(notesDB, filteredNotes);
+
+  if(foundNote) {
+    const response = {
+      status: `Note deleted successfully.`,
+      body: foundNote,
+    };
+
+    res.json(response);
+  } else {
+    res.json(`Error in deleting note.`)
+  }
+
 });
 
 module.exports = notes;
